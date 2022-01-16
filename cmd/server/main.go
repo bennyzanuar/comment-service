@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/bennyzanuar/comment-service/internal/comment"
+	"github.com/bennyzanuar/comment-service/internal/database"
 	transportHTTP "github.com/bennyzanuar/comment-service/internal/transport/http"
 )
 
@@ -14,7 +16,21 @@ type App struct{}
 // Run - sets up application
 func (app *App) Run() error {
 	fmt.Println("Setting up application")
-	handler := transportHTTP.NewHandler()
+
+	var err error
+	db, err := database.NewDatabase()
+	if err != nil {
+		return err
+	}
+
+	err = database.MigrateDB(db)
+	if err != nil {
+		return err
+	}
+
+	commentService := comment.NewService(db)
+
+	handler := transportHTTP.NewHandler(commentService)
 	handler.SetupRoutes()
 
 	if err := http.ListenAndServe(":8008", handler.Router); err != nil {

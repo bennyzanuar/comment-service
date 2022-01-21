@@ -3,30 +3,38 @@
 Repository for demo comment service
 
 ## requirement
+
 - node v 16
 - docker
 - kubernetes
 
-
 ## how to
-- deploy
-envsubst < config/deployment.yml | kubectl apply -f -
-kubectl apply -f config/service.yml
 
-- check deployment
-kubectl get deployments
+### deploy
 
-- check pod
-kubectl get pods
+```envsubst < config/deployment.yml | kubectl apply -f - ```
+```kubectl apply -f config/service.yml```
+### check deployment
 
-- check service
-kubectl get service
+```kubectl get deployments```
+### check pod
 
-- check apps
-kubectl logs comments-api-xxxxxx
+```kubectl get pods```
+### check service
 
-- port forward from docker to kube
-kubectl port-forward service/comments-api 8009:8008
+```kubectl get service```
+### check apps
 
-- delete deploy
-kubectl delete deploy comments-api
+```kubectl logs comments-api-xxxxxx```  
+
+### port forward from docker to kube
+
+```kubectl port-forward service/comments-api 8009:8008```
+
+### delete deploy
+
+```kubectl delete deploy comments-api```
+
+### docker push
+
+```docker build -t comments-api:latest .```
